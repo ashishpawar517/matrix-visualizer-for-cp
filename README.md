@@ -11,7 +11,7 @@ A React-based interactive matrix visualization tool designed for competitive pro
 
 ## Demo
 
-[Live Demo](https://your-demo-link-here.com) 
+[Live Demo](https://matrix-visualizer.netlify.app/) 
 
 <!-- ![Matrix Visualizer Screenshot](./screenshot.png) -->
 
