@@ -69,6 +69,16 @@ function App() {
           <p className="mt-1">
             Highlighted cells: {highlightedCells.size}
           </p>
+          <p className="mt-4 text-blue-600 font-medium">
+            ⭐ Star the repo on <a 
+              href="https://github.com/ashishpawar517/matrix-visualizer-for-cp" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="underline hover:text-blue-800"
+            >
+              GitHub
+            </a> if this is helpful for you!
+          </p>
         </div>
       </div>
     </div>
