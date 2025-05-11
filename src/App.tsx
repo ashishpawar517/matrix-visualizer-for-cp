@@ -6,8 +6,8 @@ import { getCellKey } from './utils/matrixUtils';
 function App() {
   // State for matrix dimensions
   const [dimensions, setDimensions] = useState({
-    rows: 20,
-    cols: 20
+    rows: 10,
+    cols: 10
   });
   
   // State for highlighted cells
