@@ -1,4 +1,20 @@
-# Matrix Visualizer for CP
+<h1 align="center"> Matrix Visualizer for CP
+  <p align="center">
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/42ec3679-b07a-44d2-8b9b-48c8d552e9e8/deploy-status)](https://app.netlify.com/sites/matrix-visualizer/deploys)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC.svg)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF.svg)](https://vitejs.dev/)
+
+  </p>
+ </h1>
+  
+
+
+</div>
+
 
 A React-based interactive matrix visualization tool designed for competitive programming practice and algorithm visualization.
 
