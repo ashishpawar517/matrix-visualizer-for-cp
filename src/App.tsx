@@ -12,6 +12,9 @@ function App() {
   
   // State for colored cells: mapping cell key -> color index (1 to 5)
   const [highlightedCells, setHighlightedCells] = useState<Map<string, number>>(new Map());
+  
+  // State for 1-based indexing
+  const [useOneBased, setUseOneBased] = useState(false);
 
   // Handle row change
   const handleRowsChange = useCallback((rows: number) => {
@@ -23,33 +26,38 @@ function App() {
     setDimensions(prev => ({ ...prev, cols }));
   }, []);
 
-// Add this debug console.log to your handleCellClick function
-const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
-  setHighlightedCells(prev => {
-    const newHighlightedCells = new Map(prev);
-    const cellKey = getCellKey(rowIndex, colIndex);
-    
-    console.log(`Cell clicked: ${rowIndex},${colIndex} (key: ${cellKey})`);
-    console.log(`Current state: ${newHighlightedCells.has(cellKey) ? 
-      `Color ${newHighlightedCells.get(cellKey)}` : 'Uncolored'}`);
-    
-    if (newHighlightedCells.has(cellKey)) {
-      const currentColor = newHighlightedCells.get(cellKey)!;
-      if (currentColor < 5) {
-        newHighlightedCells.set(cellKey, currentColor + 1);
-        console.log(`New color: ${currentColor + 1}`);
+  // Handle indexing change
+  const handleIndexingChange = useCallback((checked: boolean) => {
+    setUseOneBased(checked);
+  }, []);
+
+  // Handle cell click
+  const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
+    setHighlightedCells(prev => {
+      const newHighlightedCells = new Map(prev);
+      const cellKey = getCellKey(rowIndex, colIndex);
+      
+      console.log(`Cell clicked: ${rowIndex},${colIndex} (key: ${cellKey})`);
+      console.log(`Current state: ${newHighlightedCells.has(cellKey) ? 
+        `Color ${newHighlightedCells.get(cellKey)}` : 'Uncolored'}`);
+      
+      if (newHighlightedCells.has(cellKey)) {
+        const currentColor = newHighlightedCells.get(cellKey)!;
+        if (currentColor < 5) {
+          newHighlightedCells.set(cellKey, currentColor + 1);
+          console.log(`New color: ${currentColor + 1}`);
+        } else {
+          newHighlightedCells.delete(cellKey);
+          console.log('Reset to uncolored');
+        }
       } else {
-        newHighlightedCells.delete(cellKey);
-        console.log('Reset to uncolored');
+        newHighlightedCells.set(cellKey, 1);
+        console.log('Set to color 1');
       }
-    } else {
-      newHighlightedCells.set(cellKey, 1);
-      console.log('Set to color 1');
-    }
-    
-    return newHighlightedCells;
-  });
-}, []);
+      
+      return newHighlightedCells;
+    });
+  }, []);
 
   // Reset all highlights
   const handleReset = useCallback(() => {
@@ -62,8 +70,10 @@ const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
         <ControlBar
           rows={dimensions.rows}
           cols={dimensions.cols}
+          useOneBased={useOneBased}
           onRowsChange={handleRowsChange}
           onColsChange={handleColsChange}
+          onIndexingChange={handleIndexingChange}
           onReset={handleReset}
         />
         
@@ -72,6 +82,7 @@ const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
             rows={dimensions.rows}
             cols={dimensions.cols}
             highlightedCells={highlightedCells}
+            useOneBased={useOneBased}
             onCellClick={handleCellClick}
           />
         </div>
