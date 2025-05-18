@@ -1,22 +1,31 @@
 import React from 'react';
-import { CellProps } from '../types';
 
-const Cell: React.FC<CellProps> = ({ rowIndex, colIndex, isHighlighted, onClick }) => {
+interface CellProps {
+  rowIndex: number;
+  colIndex: number;
+  colorIndex: number;
+  onClick: (rowIndex: number, colIndex: number) => void;
+}
+
+const Cell: React.FC<CellProps> = ({ rowIndex, colIndex, colorIndex, onClick }) => {
+  // Define color palette for different highlight levels
+  const colorClasses = [
+    '', // Not used (index 0)
+    'bg-blue-200',   // Color 1
+    'bg-orange-200', // Color 2
+    'bg-yellow-200', // Color 3
+    'bg-red-200',    // Color 4
+    'bg-purple-200'  // Color 5
+  ];
+
+  const colorClass = colorIndex > 0 ? colorClasses[colorIndex] : '';
+  
   return (
     <div
-      className={`
-        relative flex items-center justify-center
-        border border-gray-300 w-12 h-12
-        transition-all duration-200 ease-in-out
-        ${isHighlighted ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}
-        cursor-pointer select-none
-      `}
+      className={`w-12 h-12 border border-gray-300 flex items-center justify-center cursor-pointer transition-colors duration-150 ${colorClass}`}
       onClick={() => onClick(rowIndex, colIndex)}
-      aria-label={`Cell at row ${rowIndex}, column ${colIndex}`}
     >
-      <span className="text-xs font-semibold">
-        {rowIndex},{colIndex}
-      </span>
+      <span className="text-sm text-black-600">{rowIndex},{colIndex}</span>
     </div>
   );
 };
