@@ -6,10 +6,11 @@ interface MatrixProps {
   rows: number;
   cols: number;
   highlightedCells: Map<string, number>;
+  useOneBased: boolean;
   onCellClick: (row: number, col: number) => void;
 }
 
-const Matrix: React.FC<MatrixProps> = ({ rows, cols, highlightedCells, onCellClick }) => {
+const Matrix: React.FC<MatrixProps> = ({ rows, cols, highlightedCells, useOneBased, onCellClick }) => {
   // Generate the matrix
   const renderMatrix = () => {
     const matrix = [];
@@ -25,6 +26,8 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, highlightedCells, onCellCli
             key={cellKey}
             rowIndex={i}
             colIndex={j}
+            displayRowIndex={useOneBased ? i + 1 : i}
+            displayColIndex={useOneBased ? j + 1 : j}
             colorIndex={colorIndex}
             onClick={onCellClick}
           />
