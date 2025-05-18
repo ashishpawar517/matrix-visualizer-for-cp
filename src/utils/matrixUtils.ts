@@ -13,3 +13,6 @@ export const createMatrix = (rows: number, cols: number): number[][] => {
     .fill(0)
     .map(() => Array(cols).fill(0));
 };
+
+// Maximum color level for cell highlighting
+export const MAX_COLOR_LEVEL = 5;
