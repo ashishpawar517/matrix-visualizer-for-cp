@@ -10,8 +10,8 @@ function App() {
     cols: 10
   });
   
-  // State for highlighted cells
-  const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
+  // State for colored cells: mapping cell key -> color index (1 to 5)
+  const [highlightedCells, setHighlightedCells] = useState<Map<string, number>>(new Map());
 
   // Handle row change
   const handleRowsChange = useCallback((rows: number) => {
@@ -23,25 +23,37 @@ function App() {
     setDimensions(prev => ({ ...prev, cols }));
   }, []);
 
-  // Handle cell click
-  const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
-    setHighlightedCells(prev => {
-      const newHighlightedCells = new Set(prev);
-      const cellKey = getCellKey(rowIndex, colIndex);
-      
-      if (newHighlightedCells.has(cellKey)) {
-        newHighlightedCells.delete(cellKey);
+// Add this debug console.log to your handleCellClick function
+const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
+  setHighlightedCells(prev => {
+    const newHighlightedCells = new Map(prev);
+    const cellKey = getCellKey(rowIndex, colIndex);
+    
+    console.log(`Cell clicked: ${rowIndex},${colIndex} (key: ${cellKey})`);
+    console.log(`Current state: ${newHighlightedCells.has(cellKey) ? 
+      `Color ${newHighlightedCells.get(cellKey)}` : 'Uncolored'}`);
+    
+    if (newHighlightedCells.has(cellKey)) {
+      const currentColor = newHighlightedCells.get(cellKey)!;
+      if (currentColor < 5) {
+        newHighlightedCells.set(cellKey, currentColor + 1);
+        console.log(`New color: ${currentColor + 1}`);
       } else {
-        newHighlightedCells.add(cellKey);
+        newHighlightedCells.delete(cellKey);
+        console.log('Reset to uncolored');
       }
-      
-      return newHighlightedCells;
-    });
-  }, []);
+    } else {
+      newHighlightedCells.set(cellKey, 1);
+      console.log('Set to color 1');
+    }
+    
+    return newHighlightedCells;
+  });
+}, []);
 
   // Reset all highlights
   const handleReset = useCallback(() => {
-    setHighlightedCells(new Set());
+    setHighlightedCells(new Map());
   }, []);
 
   return (
@@ -65,9 +77,9 @@ function App() {
         </div>
         
         <div className="mt-4 text-center text-sm text-gray-500">
-          <p>Click on any cell to highlight or unhighlight it</p>
+          <p>Click on any cell to cycle through colors (up to 5) or reset back to uncolored</p>
           <p className="mt-1">
-            Highlighted cells: {highlightedCells.size}
+            Colored cells: {highlightedCells.size}
           </p>
           <p className="mt-4 text-blue-600 font-medium">
             ⭐ Star the repo on <a 
