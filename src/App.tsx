@@ -3,6 +3,7 @@ import ControlBar from "./components/ControlBar";
 import Matrix from "./components/Matrix";
 import { getCellKey } from "./utils/matrixUtils";
 import { Analytics } from "@vercel/analytics/react";
+import { MAX_COLOR_LEVEL } from "./utils/matrixUtils";
 
 function App() {
   // State for matrix dimensions
@@ -40,27 +41,27 @@ function App() {
       const newHighlightedCells = new Map(prev);
       const cellKey = getCellKey(rowIndex, colIndex);
 
-      console.log(`Cell clicked: ${rowIndex},${colIndex} (key: ${cellKey})`);
-      console.log(
-        `Current state: ${
-          newHighlightedCells.has(cellKey)
-            ? `Color ${newHighlightedCells.get(cellKey)}`
-            : "Uncolored"
-        }`,
-      );
+      // console.log(`Cell clicked: ${rowIndex},${colIndex} (key: ${cellKey})`);
+      // console.log(
+      //   `Current state: ${
+      //     newHighlightedCells.has(cellKey)
+      //       ? `Color ${newHighlightedCells.get(cellKey)}`
+      //       : "Uncolored"
+      //   }`,
+      // );
 
       if (newHighlightedCells.has(cellKey)) {
         const currentColor = newHighlightedCells.get(cellKey)!;
         if (currentColor < MAX_COLOR_LEVEL) {
           newHighlightedCells.set(cellKey, currentColor + 1);
-          console.log(`New color: ${currentColor + 1}`);
+          // console.log(`New color: ${currentColor + 1}`);
         } else {
           newHighlightedCells.delete(cellKey);
-          console.log("Reset to uncolored");
+          // console.log("Reset to uncolored");
         }
       } else {
         newHighlightedCells.set(cellKey, 1);
-        console.log("Set to color 1");
+        // console.log("Set to color 1");
       }
 
       return newHighlightedCells;
