@@ -1,7 +1,7 @@
 <h1 align="center"> Matrix Visualizer for CP
   <p align="center">
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/42ec3679-b07a-44d2-8b9b-48c8d552e9e8/deploy-status)](https://app.netlify.com/sites/matrix-visualizer/deploys)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-1A1A1A?logo=vercel&logoColor=white)](https://matrix-visualizer-blush.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
