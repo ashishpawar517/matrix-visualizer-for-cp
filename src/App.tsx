@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import ControlBar from "./components/ControlBar";
 import Matrix from "./components/Matrix";
 import { getCellKey } from "./utils/matrixUtils";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   // State for matrix dimensions
@@ -114,6 +115,7 @@ function App() {
           </p>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 }
