@@ -51,7 +51,7 @@ function App() {
 
       if (newHighlightedCells.has(cellKey)) {
         const currentColor = newHighlightedCells.get(cellKey)!;
-        if (currentColor < 5) {
+        if (currentColor < MAX_COLOR_LEVEL) {
           newHighlightedCells.set(cellKey, currentColor + 1);
           console.log(`New color: ${currentColor + 1}`);
         } else {
