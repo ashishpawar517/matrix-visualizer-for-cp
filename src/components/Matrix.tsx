@@ -1,6 +1,13 @@
 import React from 'react';
 import Cell from './Cell';
-import { MatrixProps } from '../types';
+import { getCellKey } from '../utils/matrixUtils';
+
+interface MatrixProps {
+  rows: number;
+  cols: number;
+  highlightedCells: Map<string, number>;
+  onCellClick: (row: number, col: number) => void;
+}
 
 const Matrix: React.FC<MatrixProps> = ({ rows, cols, highlightedCells, onCellClick }) => {
   // Generate the matrix
@@ -10,13 +17,15 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, highlightedCells, onCellCli
     for (let i = 0; i < rows; i++) {
       const row = [];
       for (let j = 0; j < cols; j++) {
-        const cellKey = `${i},${j}`;
+        const cellKey = getCellKey(i, j);
+        const colorIndex = highlightedCells.get(cellKey) || 0;
+        
         row.push(
           <Cell
             key={cellKey}
             rowIndex={i}
             colIndex={j}
-            isHighlighted={highlightedCells.has(cellKey)}
+            colorIndex={colorIndex}
             onClick={onCellClick}
           />
         );
