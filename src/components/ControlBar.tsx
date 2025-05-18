@@ -5,8 +5,10 @@ import { Grid, RefreshCw } from 'lucide-react'
 const ControlBar: React.FC<ControlBarProps> = ({
   rows,
   cols,
+  useOneBased,
   onRowsChange,
   onColsChange,
+  onIndexingChange,
   onReset,
 }) => {
   // local inputs as strings so the user can delete everything
@@ -56,6 +58,18 @@ const ControlBar: React.FC<ControlBarProps> = ({
         </div>
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
+          <input
+          type="checkbox"
+          id="indexing"
+          checked={useOneBased}
+          onChange={(e) => onIndexingChange(e.target.checked)}
+          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <label htmlFor="indexing" className="text-sm font-medium text-gray-700">
+          1-based indexing
+        </label>
+          </div>
+          <div className="flex items-center gap-2">
             <label htmlFor="rows" className="text-sm font-medium text-gray-700">
               Rows:
             </label>
@@ -83,17 +97,20 @@ const ControlBar: React.FC<ControlBarProps> = ({
               className="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button
+         
+          <div className="flex items-center gap-2">
+            <button
             onClick={onReset}
             className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
             aria-label="Reset matrix highlights"
           >
             <RefreshCw size={16} />
             <span>Reset</span>
-          </button>
-        </div>
+           </button>     
+          </div>
       </div>
     </div>
+  </div>
   )
 }
 
