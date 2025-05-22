@@ -8,6 +8,8 @@ interface MatrixProps {
   highlightedCells: Map<string, number>;
   useOneBased: boolean;
   onCellClick: (row: number, col: number) => void;
+  // new prop for the selected cell via keyboard nav
+  selectedCell: { row: number; col: number } | null;
 }
 
 const Matrix: React.FC<MatrixProps> = ({
@@ -16,6 +18,7 @@ const Matrix: React.FC<MatrixProps> = ({
   highlightedCells,
   useOneBased,
   onCellClick,
+  selectedCell,
 }) => {
   // Generate the matrix
   const renderMatrix = () => {
@@ -26,6 +29,11 @@ const Matrix: React.FC<MatrixProps> = ({
       for (let j = 0; j < cols; j++) {
         const cellKey = getCellKey(i, j);
         const colorIndex = highlightedCells.get(cellKey) || 0;
+        // check if this cell is the selected cell
+        const isSelected =
+          selectedCell !== null &&
+          selectedCell.row === i &&
+          selectedCell.col === j;
 
         row.push(
           <Cell
@@ -36,6 +44,7 @@ const Matrix: React.FC<MatrixProps> = ({
             displayColIndex={useOneBased ? j + 1 : j}
             colorIndex={colorIndex}
             onClick={onCellClick}
+            isSelected={isSelected}
           />,
         );
       }

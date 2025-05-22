@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ControlBar from "./components/ControlBar";
 import Matrix from "./components/Matrix";
 import { getCellKey } from "./utils/matrixUtils";
@@ -6,72 +6,156 @@ import { Analytics } from "@vercel/analytics/react";
 import { MAX_COLOR_LEVEL } from "./utils/matrixUtils";
 
 function App() {
-  // State for matrix dimensions
   const [dimensions, setDimensions] = useState({
     rows: 10,
     cols: 10,
   });
-
-  // State for colored cells: mapping cell key -> color index (1 to 5)
   const [highlightedCells, setHighlightedCells] = useState<Map<string, number>>(
     new Map(),
   );
-
-  // State for 1-based indexing
   const [useOneBased, setUseOneBased] = useState(false);
+  const [selectedCell, setSelectedCell] = useState<{
+    row: number;
+    col: number;
+  } | null>({ row: 0, col: 0 });
+  const [enableKeyboardNav, setEnableKeyboardNav] = useState(true);
 
-  // Handle row change
   const handleRowsChange = useCallback((rows: number) => {
     setDimensions((prev) => ({ ...prev, rows }));
   }, []);
 
-  // Handle column change
   const handleColsChange = useCallback((cols: number) => {
     setDimensions((prev) => ({ ...prev, cols }));
   }, []);
 
-  // Handle indexing change
   const handleIndexingChange = useCallback((checked: boolean) => {
     setUseOneBased(checked);
   }, []);
 
-  // Handle cell click
-  const handleCellClick = useCallback((rowIndex: number, colIndex: number) => {
-    setHighlightedCells((prev) => {
-      const newHighlightedCells = new Map(prev);
-      const cellKey = getCellKey(rowIndex, colIndex);
-
-      // console.log(`Cell clicked: ${rowIndex},${colIndex} (key: ${cellKey})`);
-      // console.log(
-      //   `Current state: ${
-      //     newHighlightedCells.has(cellKey)
-      //       ? `Color ${newHighlightedCells.get(cellKey)}`
-      //       : "Uncolored"
-      //   }`,
-      // );
-
-      if (newHighlightedCells.has(cellKey)) {
-        const currentColor = newHighlightedCells.get(cellKey)!;
-        if (currentColor < MAX_COLOR_LEVEL) {
-          newHighlightedCells.set(cellKey, currentColor + 1);
-          // console.log(`New color: ${currentColor + 1}`);
-        } else {
-          newHighlightedCells.delete(cellKey);
-          // console.log("Reset to uncolored");
-        }
-      } else {
-        newHighlightedCells.set(cellKey, 1);
-        // console.log("Set to color 1");
+  // Now takes an optional keyboardTriggered flag
+  const handleCellClick = useCallback(
+    (
+      rowIndex: number,
+      colIndex: number,
+      keyboardTriggered: boolean = false,
+    ) => {
+      // on a mouse click, disable keyboard nav; not so on a keyboard trigger (f)
+      if (!keyboardTriggered) {
+        setEnableKeyboardNav(false);
       }
 
-      return newHighlightedCells;
-    });
-  }, []);
+      setHighlightedCells((prev) => {
+        const newHighlightedCells = new Map(prev);
+        const cellKey = getCellKey(rowIndex, colIndex);
 
-  // Reset all highlights
+        if (newHighlightedCells.has(cellKey)) {
+          const currentColor = newHighlightedCells.get(cellKey)!;
+          if (currentColor < MAX_COLOR_LEVEL) {
+            newHighlightedCells.set(cellKey, currentColor + 1);
+          } else {
+            newHighlightedCells.delete(cellKey);
+          }
+        } else {
+          newHighlightedCells.set(cellKey, 1);
+        }
+
+        return newHighlightedCells;
+      });
+    },
+    [],
+  );
+
   const handleReset = useCallback(() => {
     setHighlightedCells(new Map());
+    setEnableKeyboardNav(true);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (["h", "j", "k", "l", "f", "i", "r", "c", "e"].includes(e.key)) {
+        e.preventDefault();
+      }
+
+      // Handle new custom keys regardless of nav state
+      if (e.key === "i") {
+        setUseOneBased((prev) => !prev);
+        return;
+      }
+      if (e.key === "r") {
+        document.getElementById("rows")?.focus();
+        return;
+      }
+      if (e.key === "c") {
+        document.getElementById("cols")?.focus();
+        return;
+      }
+      if (e.key === "e") {
+        handleReset();
+        return;
+      }
+
+      // If keyboard navigation is disabled, only re-enable on "j"
+      if (!enableKeyboardNav) {
+        if (e.key === "j") {
+          setEnableKeyboardNav(true);
+          setSelectedCell({ row: 0, col: 0 });
+        }
+        return;
+      }
+
+      if (e.key === "f") {
+        if (selectedCell) {
+          // Call the click handler marking it as keyboard triggered so navigation stays enabled.
+          handleCellClick(selectedCell.row, selectedCell.col, true);
+        }
+        return;
+      }
+      if (e.key === "h") {
+        setSelectedCell((prev) => {
+          const newCol = prev ? Math.max(prev.col - 1, 0) : 0;
+          return prev
+            ? { row: prev.row, col: newCol }
+            : { row: 0, col: newCol };
+        });
+      }
+      if (e.key === "l") {
+        setSelectedCell((prev) => {
+          const newCol = prev ? Math.min(prev.col + 1, dimensions.cols - 1) : 0;
+          return prev
+            ? { row: prev.row, col: newCol }
+            : { row: 0, col: newCol };
+        });
+      }
+      if (e.key === "k") {
+        setSelectedCell((prev) => {
+          const newRow = prev ? Math.max(prev.row - 1, 0) : 0;
+          return prev
+            ? { row: newRow, col: prev.col }
+            : { row: newRow, col: 0 };
+        });
+      }
+      if (e.key === "j") {
+        setSelectedCell((prev) => {
+          if (!prev) {
+            return { row: 0, col: 0 };
+          }
+          const newRow = Math.min(prev.row + 1, dimensions.rows - 1);
+          return { row: newRow, col: prev.col };
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [
+    enableKeyboardNav,
+    selectedCell,
+    dimensions,
+    handleCellClick,
+    handleReset,
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -93,13 +177,17 @@ function App() {
             highlightedCells={highlightedCells}
             useOneBased={useOneBased}
             onCellClick={handleCellClick}
+            selectedCell={enableKeyboardNav ? selectedCell : null}
           />
         </div>
 
         <div className="mt-4 text-center text-sm text-gray-500">
           <p>
-            Click on any cell to cycle through colors (up to 5) or reset back to
-            uncolored
+            Use <strong>h j k l</strong> keys to navigate the grid.
+          </p>
+          <p>
+            Press <strong>f</strong> to toggle cell colors (same as mouse click)
+            without disabling navigation.
           </p>
           <p className="mt-1">Colored cells: {highlightedCells.size}</p>
           <p className="mt-4 text-blue-600 font-medium">
