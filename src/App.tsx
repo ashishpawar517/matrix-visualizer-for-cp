@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import ControlBar from "./components/ControlBar";
 import Matrix from "./components/Matrix";
 import { getCellKey } from "./utils/matrixUtils";
@@ -74,6 +74,17 @@ function App() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (["h", "j", "k", "l", "f", "i", "r", "c", "e"].includes(e.key)) {
         e.preventDefault();
+      }
+
+      // Deselect rows/cols inputs if a navigation key is pressed
+      if (["h", "j", "k", "l"].includes(e.key)) {
+        const activeEl = document.activeElement;
+        if (
+          activeEl instanceof HTMLInputElement &&
+          (activeEl.id === "rows" || activeEl.id === "cols")
+        ) {
+          activeEl.blur();
+        }
       }
 
       // Handle new custom keys regardless of nav state
@@ -184,10 +195,9 @@ function App() {
         <div className="mt-4 text-center text-sm text-gray-500">
           <p>
             Use <strong>h j k l</strong> keys to navigate the grid.
-          </p>
-          <p>
-            Press <strong>f</strong> to toggle cell colors (same as mouse click)
-            without disabling navigation.
+            Press <strong>f</strong> to toggle cell colors. Press <strong>i</strong> to change indexing,
+              <strong> r c</strong> for jump to rows & columns input, 
+            <strong> e</strong> to reset/erase the coloring. 
           </p>
           <p className="mt-1">Colored cells: {highlightedCells.size}</p>
           <p className="mt-4 text-blue-600 font-medium">
