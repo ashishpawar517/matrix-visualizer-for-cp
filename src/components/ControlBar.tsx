@@ -11,42 +11,40 @@ const ControlBar: React.FC<ControlBarProps> = ({
   onIndexingChange,
   onReset,
 }) => {
-  // local inputs as strings so the user can delete everything
   const [rowsInput, setRowsInput] = useState(rows.toString());
   const [colsInput, setColsInput] = useState(cols.toString());
 
-  // keep local state in sync if parent ever changes rows/cols from outside
+  // Keep local input state in sync with props
   useEffect(() => {
     setRowsInput(rows.toString());
   }, [rows]);
+
   useEffect(() => {
     setColsInput(cols.toString());
   }, [cols]);
 
-  // only allow digits (or empty)
-  const handleRowsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^\d*$/.test(e.target.value)) {
-      setRowsInput(e.target.value);
-    }
-  };
-  const handleColsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^\d*$/.test(e.target.value)) {
-      setColsInput(e.target.value);
+  const handleRowsBlur = () => {
+    if (rowsInput.trim() === "") {
+      // Revert to last value if nothing was entered
+      setRowsInput(rows.toString());
+    } else {
+      // Update parent's value
+      const parsed = parseInt(rowsInput, 10);
+      if (!isNaN(parsed)) {
+        onRowsChange(parsed);
+      }
     }
   };
 
-  // on blur (or Enter) we clamp, sync back to input, and notify parent
-  const commitRows = () => {
-    let n = parseInt(rowsInput) || 1;
-    n = Math.min(40, Math.max(1, n));
-    setRowsInput(n.toString());
-    onRowsChange(n);
-  };
-  const commitCols = () => {
-    let n = parseInt(colsInput) || 1;
-    n = Math.min(40, Math.max(1, n));
-    setColsInput(n.toString());
-    onColsChange(n);
+  const handleColsBlur = () => {
+    if (colsInput.trim() === "") {
+      setColsInput(cols.toString());
+    } else {
+      const parsed = parseInt(colsInput, 10);
+      if (!isNaN(parsed)) {
+        onColsChange(parsed);
+      }
+    }
   };
 
   return (
@@ -78,11 +76,16 @@ const ControlBar: React.FC<ControlBarProps> = ({
             </label>
             <input
               id="rows"
-              type="text"
+              type="number"
               value={rowsInput}
-              onChange={handleRowsChange}
-              onBlur={commitRows}
-              onKeyDown={(e) => e.key === "Enter" && commitRows()}
+              onFocus={() => setRowsInput("")}
+              onBlur={handleRowsBlur}
+              onKeyDown={(e) => {
+                if (["h", "j", "k", "l"].includes(e.key)) {
+                  e.currentTarget.blur();
+                }
+              }}
+              onChange={(e) => setRowsInput(e.target.value)}
               className="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -92,11 +95,16 @@ const ControlBar: React.FC<ControlBarProps> = ({
             </label>
             <input
               id="cols"
-              type="text"
+              type="number"
               value={colsInput}
-              onChange={handleColsChange}
-              onBlur={commitCols}
-              onKeyDown={(e) => e.key === "Enter" && commitCols()}
+              onFocus={() => setColsInput("")}
+              onBlur={handleColsBlur}
+              onKeyDown={(e) => {
+                if (["h", "j", "k", "l"].includes(e.key)) {
+                  e.currentTarget.blur();
+                }
+              }}
+              onChange={(e) => setColsInput(e.target.value)}
               className="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

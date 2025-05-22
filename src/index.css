@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Remove number input spinners in Chrome */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input spinners in Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
