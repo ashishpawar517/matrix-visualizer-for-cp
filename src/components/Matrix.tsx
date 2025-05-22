@@ -31,7 +31,9 @@ const Matrix: React.FC<MatrixProps> = ({
         const colorIndex = highlightedCells.get(cellKey) || 0;
         // check if this cell is the selected cell
         const isSelected =
-          selectedCell !== null && selectedCell.row === i && selectedCell.col === j;
+          selectedCell !== null &&
+          selectedCell.row === i &&
+          selectedCell.col === j;
 
         row.push(
           <Cell
