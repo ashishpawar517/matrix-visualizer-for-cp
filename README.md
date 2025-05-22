@@ -10,11 +10,6 @@
 
   </p>
  </h1>
-  
-
-
-</div>
-
 
 A React-based interactive matrix visualization tool designed for competitive programming practice and algorithm visualization.
 
@@ -23,6 +18,12 @@ A React-based interactive matrix visualization tool designed for competitive pro
 - Interactive grid-based matrix visualization
 - Customizable matrix dimensions (up to 40x40)
 - Cell highlighting with click interactions
+- **Mouseless Navigation:** Navigate the grid using vim keys:
+  - **h, j, k, l:** Move left, down, up, and right across the matrix.
+  - **f:** Toggle the color of the currently selected cell.
+  - **i:** Toggle between 0-based and 1-based indexing.
+  - **r, c:** Jump to the rows or columns input fields (which clear on focus, updating on navigation if left empty).
+  - **e:** Reset/erase the current cell coloring.
 - Clean, responsive UI built with Tailwind CSS
 
 ## Demo
@@ -42,36 +43,42 @@ A React-based interactive matrix visualization tool designed for competitive pro
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/ashishpawar517/matrix-visualizer-for-cp.git
-```
+   ```bash
+   git clone https://github.com/ashishpawar517/matrix-visualizer-for-cp.git
+   ```
 
 2. Navigate to the project directory:
 
-```bash
-cd matrix-visualizer-for-cp
-```
+   ```bash
+   cd matrix-visualizer-for-cp
+   ```
 
 3. Install dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 4. Start the development server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 5. Open your browser and visit `http://localhost:5173`
 
 ## Usage
 
-- **Adjust Matrix Size**: Use the row and column inputs to resize the matrix (1-40 dimensions)
-- **Highlight Cells**: Click on any cell to highlight or unhighlight it
-- **Reset**: Click the reset button to clear all highlighted cells
-- **Cell Coordinates**: Each cell displays its (row, column) coordinates
+- **Adjust Matrix Size:** Use the row and column inputs to resize the matrix (1-40 dimensions). The inputs automatically clear when focused via keyboard navigation and revert if no new value is entered.
+- **Highlight Cells:** Click on any cell to highlight or unhighlight it.
+- **Mouseless Navigation:** Use:
+  - **h, j, k, l** to move the selection cursor around the matrix.
+  - **f** to toggle the cell color.
+  - **i** to switch indexing between 0-based and 1-based.
+  - **r, c** to quickly jump to the rows or columns input fields.
+  - **e** to reset/clear all highlighted cells.
+- **Reset:** Click the reset button or press **e** to clear all highlighted cells.
+- **Cell Coordinates:** Each cell displays its (row, column) coordinates.
 
 ## Tech Stack
 
@@ -107,10 +114,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
+This project is licensed under the GNU v3 License - see the [LICENSE](/LICENSE) file for details.
 
 ## Acknowledgments
 
-- Inspired by the needs of competitive programmers to visualize matrix-based algorithms
-- Built with React and Tailwind CSS
+- Inspired by the needs of competitive programmers to visualize matrix-based algorithms.
+- Built with React and Tailwind CSS.
 
