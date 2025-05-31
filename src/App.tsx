@@ -19,6 +19,7 @@ function App() {
     col: number;
   } | null>({ row: 0, col: 0 });
   const [enableKeyboardNav, setEnableKeyboardNav] = useState(true);
+  const [useChessLayout, setUseChessLayout] = useState(false);
 
   const handleRowsChange = useCallback((rows: number) => {
     setDimensions((prev) => ({ ...prev, rows }));
@@ -30,6 +31,10 @@ function App() {
 
   const handleIndexingChange = useCallback((checked: boolean) => {
     setUseOneBased(checked);
+  }, []);
+
+  const handleChessLayoutChange = useCallback((checked: boolean) => {
+    setUseChessLayout(checked);
   }, []);
 
   // Now takes an optional keyboardTriggered flag
@@ -175,9 +180,11 @@ function App() {
           rows={dimensions.rows}
           cols={dimensions.cols}
           useOneBased={useOneBased}
+          useChessLayout={useChessLayout}
           onRowsChange={handleRowsChange}
           onColsChange={handleColsChange}
           onIndexingChange={handleIndexingChange}
+          onChessLayoutChange={handleChessLayoutChange}
           onReset={handleReset}
         />
 
@@ -187,6 +194,7 @@ function App() {
             cols={dimensions.cols}
             highlightedCells={highlightedCells}
             useOneBased={useOneBased}
+            useChessLayout={useChessLayout}
             onCellClick={handleCellClick}
             selectedCell={enableKeyboardNav ? selectedCell : null}
           />
