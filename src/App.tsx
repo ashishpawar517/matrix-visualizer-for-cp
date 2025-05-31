@@ -19,6 +19,7 @@ function App() {
     col: number;
   } | null>({ row: 0, col: 0 });
   const [enableKeyboardNav, setEnableKeyboardNav] = useState(true);
+  const [useChessLayout, setUseChessLayout] = useState(false);
 
   const handleRowsChange = useCallback((rows: number) => {
     setDimensions((prev) => ({ ...prev, rows }));
@@ -30,6 +31,10 @@ function App() {
 
   const handleIndexingChange = useCallback((checked: boolean) => {
     setUseOneBased(checked);
+  }, []);
+
+  const handleChessLayoutChange = useCallback((checked: boolean) => {
+    setUseChessLayout(checked);
   }, []);
 
   // Now takes an optional keyboardTriggered flag
@@ -175,9 +180,11 @@ function App() {
           rows={dimensions.rows}
           cols={dimensions.cols}
           useOneBased={useOneBased}
+          useChessLayout={useChessLayout}
           onRowsChange={handleRowsChange}
           onColsChange={handleColsChange}
           onIndexingChange={handleIndexingChange}
+          onChessLayoutChange={handleChessLayoutChange}
           onReset={handleReset}
         />
 
@@ -187,6 +194,7 @@ function App() {
             cols={dimensions.cols}
             highlightedCells={highlightedCells}
             useOneBased={useOneBased}
+            useChessLayout={useChessLayout}
             onCellClick={handleCellClick}
             selectedCell={enableKeyboardNav ? selectedCell : null}
           />
@@ -194,10 +202,11 @@ function App() {
 
         <div className="mt-4 text-center text-sm text-gray-500">
           <p>
-            Use <strong>h j k l</strong> keys to navigate the grid.
-            Press <strong>f</strong> to toggle cell colors. Press <strong>i</strong> to change indexing,
-              <strong> r c</strong> for jump to rows & columns input, 
-            <strong> e</strong> to reset/erase the coloring. 
+            Use <strong>h j k l</strong> keys to navigate the grid. Press{" "}
+            <strong>f</strong> to toggle cell colors. Press <strong>i</strong>{" "}
+            to change indexing,
+            <strong> r c</strong> for jump to rows & columns input,
+            <strong> e</strong> to reset/erase the coloring.
           </p>
           <p className="mt-1">Colored cells: {highlightedCells.size}</p>
           <p className="mt-4 text-blue-600 font-medium">

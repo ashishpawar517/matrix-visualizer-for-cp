@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { ControlBarProps } from "../types";
 import { Grid, RefreshCw } from "lucide-react";
+
+interface ControlBarProps {
+  rows: number;
+  cols: number;
+  useOneBased: boolean;
+  useChessLayout: boolean;
+  onRowsChange: (rows: number) => void;
+  onColsChange: (cols: number) => void;
+  onIndexingChange: (checked: boolean) => void;
+  onChessLayoutChange: (checked: boolean) => void;
+  onReset: () => void;
+}
 
 const ControlBar: React.FC<ControlBarProps> = ({
   rows,
   cols,
   useOneBased,
+  useChessLayout,
   onRowsChange,
   onColsChange,
   onIndexingChange,
+  onChessLayoutChange,
   onReset,
 }) => {
   const [rowsInput, setRowsInput] = useState(rows.toString());
@@ -68,6 +81,21 @@ const ControlBar: React.FC<ControlBarProps> = ({
               className="text-sm font-medium text-gray-700"
             >
               1-based indexing
+            </label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="chessLayout"
+              checked={useChessLayout}
+              onChange={(e) => onChessLayoutChange(e.target.checked)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label
+              htmlFor="chessLayout"
+              className="text-sm font-medium text-gray-700"
+            >
+              Chess layout
             </label>
           </div>
           <div className="flex items-center gap-2">

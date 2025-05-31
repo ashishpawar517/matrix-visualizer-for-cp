@@ -7,8 +7,8 @@ interface MatrixProps {
   cols: number;
   highlightedCells: Map<string, number>;
   useOneBased: boolean;
+  useChessLayout: boolean;
   onCellClick: (row: number, col: number) => void;
-  // new prop for the selected cell via keyboard nav
   selectedCell: { row: number; col: number } | null;
 }
 
@@ -17,6 +17,7 @@ const Matrix: React.FC<MatrixProps> = ({
   cols,
   highlightedCells,
   useOneBased,
+  useChessLayout,
   onCellClick,
   selectedCell,
 }) => {
@@ -43,6 +44,7 @@ const Matrix: React.FC<MatrixProps> = ({
             displayRowIndex={useOneBased ? i + 1 : i}
             displayColIndex={useOneBased ? j + 1 : j}
             colorIndex={colorIndex}
+            useChessLayout={useChessLayout}
             onClick={onCellClick}
             isSelected={isSelected}
           />,
