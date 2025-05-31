@@ -36,8 +36,9 @@ const Cell: React.FC<CellProps> = ({
   const getStyle = () => {
     if (colorIndex === 2) {
       return {
-        backgroundColor: 'rgb(254, 215, 170)', // orange-200 color
-        backgroundImage: 'repeating-linear-gradient(120deg, transparent, transparent 10px, rgba(0,0,0,0.1) 11px, rgba(0,0,0,0.1) 12px)'
+        backgroundColor: "rgb(254, 215, 170)", // orange-200 color
+        backgroundImage:
+          "repeating-linear-gradient(120deg, transparent, transparent 10px, rgba(0,0,0,0.1) 11px, rgba(0,0,0,0.1) 12px)",
       };
     }
     return {};
@@ -45,7 +46,7 @@ const Cell: React.FC<CellProps> = ({
 
   // Determine background class based on chess layout and color index
   let bgClass = "";
-  
+
   if (colorIndex > 0) {
     // If cell has a color, use that color (pattern for color 2 is handled by getStyle)
     if (colorIndex !== 2) {
@@ -62,7 +63,9 @@ const Cell: React.FC<CellProps> = ({
         backgroundImage:
           "repeating-linear-gradient(120deg, #cccccc, #cccccc 5px, transparent 5px, transparent 10px)",
       }
-    : (colorIndex === 2 ? getStyle() : {});
+    : colorIndex === 2
+      ? getStyle()
+      : {};
 
   return (
     <div
