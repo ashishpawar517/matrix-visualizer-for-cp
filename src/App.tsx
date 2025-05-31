@@ -202,10 +202,11 @@ function App() {
 
         <div className="mt-4 text-center text-sm text-gray-500">
           <p>
-            Use <strong>h j k l</strong> keys to navigate the grid.
-            Press <strong>f</strong> to toggle cell colors. Press <strong>i</strong> to change indexing,
-              <strong> r c</strong> for jump to rows & columns input, 
-            <strong> e</strong> to reset/erase the coloring. 
+            Use <strong>h j k l</strong> keys to navigate the grid. Press{" "}
+            <strong>f</strong> to toggle cell colors. Press <strong>i</strong>{" "}
+            to change indexing,
+            <strong> r c</strong> for jump to rows & columns input,
+            <strong> e</strong> to reset/erase the coloring.
           </p>
           <p className="mt-1">Colored cells: {highlightedCells.size}</p>
           <p className="mt-4 text-blue-600 font-medium">
