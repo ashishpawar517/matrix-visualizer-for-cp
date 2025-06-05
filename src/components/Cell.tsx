@@ -8,7 +8,6 @@ interface CellProps {
   colorIndex: number;
   useChessLayout: boolean;
   onClick: (rowIndex: number, colIndex: number) => void;
-  // new optional prop to flag cell selected via keyboard nav
   isSelected?: boolean;
 }
 
@@ -32,45 +31,30 @@ const Cell: React.FC<CellProps> = ({
     "bg-purple-200", // Color 5
   ];
 
-  // Define custom styles for pattern
-  const getStyle = () => {
-    if (colorIndex === 2) {
-      return {
-        backgroundColor: "rgb(254, 215, 170)", // orange-200 color
-        backgroundImage:
-          "repeating-linear-gradient(120deg, transparent, transparent 10px, rgba(0,0,0,0.1) 11px, rgba(0,0,0,0.1) 12px)",
-      };
-    }
-    return {};
-  };
-
   // Determine background class based on chess layout and color index
   let bgClass = "";
 
   if (colorIndex > 0) {
-    // If cell has a color, use that color (pattern for color 2 is handled by getStyle)
-    if (colorIndex !== 2) {
-      bgClass = colorClasses[colorIndex];
-    }
+    // If cell has a color, use that color from colorClasses array
+    bgClass = colorClasses[colorIndex];
   } else if (useChessLayout) {
     // If chess layout is enabled and cell doesn't have a color, apply chess pattern
     bgClass = (rowIndex + colIndex) % 2 === 0 ? "bg-gray-200" : "";
   }
 
-  // If this cell is selected via keyboard, apply a stripe background
-  const stripeStyle = isSelected
+  // Create striped pattern for selected cells
+  const cellStyle = isSelected
     ? {
         backgroundImage:
-          "repeating-linear-gradient(120deg, #cccccc, #cccccc 5px, transparent 5px, transparent 10px)",
+          "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.1) 5px, rgba(0,0,0,0.1) 10px)",
+        // This keeps the original background color visible under the stripes
       }
-    : colorIndex === 2
-      ? getStyle()
-      : {};
+    : {};
 
   return (
     <div
       className={`w-12 h-12 border border-gray-300 flex items-center justify-center cursor-pointer transition-colors duration-150 ${bgClass}`}
-      style={stripeStyle}
+      style={cellStyle}
       onClick={() => onClick(rowIndex, colIndex)}
     >
       <span className="text-sm text-black-600">
