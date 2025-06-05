@@ -45,7 +45,7 @@ const Cell: React.FC<CellProps> = ({
   // Create striped pattern for selected cells
   const cellStyle = isSelected
     ? {
-        backgroundImage: 
+        backgroundImage:
           "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.1) 5px, rgba(0,0,0,0.1) 10px)",
         // This keeps the original background color visible under the stripes
       }
