@@ -75,9 +75,22 @@ function App() {
     setEnableKeyboardNav(true);
   }, []);
 
+  const clearCell = useCallback((rowIndex: number, colIndex: number) => {
+    setHighlightedCells((prev) => {
+      const newHighlightedCells = new Map(prev);
+      const cellKey = getCellKey(rowIndex, colIndex);
+      
+      if (newHighlightedCells.has(cellKey)) {
+        newHighlightedCells.delete(cellKey);
+      }
+      
+      return newHighlightedCells;
+    });
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (["h", "j", "k", "l", "f", "i", "r", "c", "e"].includes(e.key)) {
+      if (["h", "j", "k", "l", "f", "i", "r", "c", "e", "d"].includes(e.key)) {
         e.preventDefault();
       }
 
@@ -126,6 +139,14 @@ function App() {
         }
         return;
       }
+      
+      if (e.key === "d") {
+        if (selectedCell) {
+          // Clear the current cell
+          clearCell(selectedCell.row, selectedCell.col);
+        }
+        return;
+      }
       if (e.key === "h") {
         setSelectedCell((prev) => {
           const newCol = prev ? Math.max(prev.col - 1, 0) : 0;
@@ -171,6 +192,7 @@ function App() {
     dimensions,
     handleCellClick,
     handleReset,
+    clearCell,
   ]);
 
   return (
@@ -203,7 +225,8 @@ function App() {
         <div className="mt-4 text-center text-sm text-gray-500">
           <p>
             Use <strong>h j k l</strong> keys to navigate the grid. Press{" "}
-            <strong>f</strong> to toggle cell colors. Press <strong>i</strong>{" "}
+            <strong>f</strong> to toggle cell colors. Press <strong>d</strong>{" "}
+            to clear the current cell. Press <strong>i</strong>{" "}
             to change indexing,
             <strong> r c</strong> for jump to rows & columns input,
             <strong> e</strong> to reset/erase the coloring.
