@@ -21,9 +21,10 @@ A React-based interactive matrix visualization tool designed for competitive pro
 - **Mouseless Navigation:** Navigate the grid using vim keys:
   - **h, j, k, l:** Move left, down, up, and right across the matrix.
   - **f:** Toggle the color of the currently selected cell.
+  - **d:** Clear the currently selected cell.
   - **i:** Toggle between 0-based and 1-based indexing.
   - **r, c:** Jump to the rows or columns input fields (which clear on focus, updating on navigation if left empty).
-  - **e:** Reset/erase the current cell coloring.
+  - **e:** Reset/erase all cell coloring.
 - Clean, responsive UI built with Tailwind CSS
 
 ## Demo
@@ -74,6 +75,7 @@ A React-based interactive matrix visualization tool designed for competitive pro
 - **Mouseless Navigation:** Use:
   - **h, j, k, l** to move the selection cursor around the matrix.
   - **f** to toggle the cell color.
+  - **d** to clear the currently selected cell.
   - **i** to switch indexing between 0-based and 1-based.
   - **r, c** to quickly jump to the rows or columns input fields.
   - **e** to reset/clear all highlighted cells.
